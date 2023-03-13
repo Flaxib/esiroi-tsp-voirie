@@ -11,11 +11,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 
-import environ
+import os
+
 from pathlib import Path
 
-env = environ.Env()
-environ.Env.read_env()
+env = os.environ.get
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-0yi1dr=r33s!%+_jpf4-kc8mpygmqpw=*4ftm(z_36vjqinn8e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []      
+ALLOWED_HOSTS = ["127.0.0.1"]      
 
 
 # Application definition
@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'serveur.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': env('DB_NAME'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
+        'NAME': env('POSTGRES_DB'),
+        'HOST': env('POSTGRES_HOST'),
+        'PORT': env('POSTGRES_PORT'),
+        'USER': env('POSTGRES_USER'),
+        'PASSWORD': env('POSTGRES_PASSWORD'),
     }
 }
 
@@ -136,6 +136,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True   
 CORS_ORIGIN_WHITELIST = [
-    'http://127.0.0.1:5173',
-    'http://127.0.0.1:8000',
+    'http://127.0.0.1:8080',
 ]

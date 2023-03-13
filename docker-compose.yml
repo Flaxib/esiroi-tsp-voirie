@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgis:
+    restart: always
+    image: postgis/postgis:latest
+    env_file: 
+      -  ./serveur/serveur/.env  
+    volumes:
+      - ./troncon_de_route.sql:/docker-entrypoint-initdb.d/init.sql
+    ports: 
+      - 5432:5432  
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    restart: unless-stopped
+    build:
+      context: ./serveur
+    env_file: 
+      -  ./serveur/serveur/.env
+    volumes:
+      - ./serveur:/app
+    ports: 
+      - 3000:3000
+    depends_on:
+      postgis:
+        condition: service_healthy  
+
+  client:
+    restart: unless-stopped
+    build:
+      context: ./client
+    volumes:
+      - ./client:/app
+    ports: 
+      - 8080:8080
+    depends_on:
+      - api
+
+volumes:
+  app-data:

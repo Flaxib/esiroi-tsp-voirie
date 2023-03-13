@@ -10,7 +10,7 @@ import 'leaflet/dist/leaflet.css';
 
 
 // fetch geojson data
-const geojson = await fetch('http://localhost:8000/api/geodata/').then(res => res.json())
+const geojson = await fetch('http://127.0.0.1:3000/api/geodata/').then(res => res.json())
 // Créer une référence à l'élément du template qui contiendra la carte
 const mapContainer = ref(null);
 
